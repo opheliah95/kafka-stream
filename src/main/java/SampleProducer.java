@@ -1,33 +1,45 @@
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
 public class SampleProducer {
-    public SampleProducer(){
+    // static variable
+    public static final String TOPIC = "hello-kafka";
+    public static final String SERVER = "bootstrap.servers";
+    public static final String HOST = "localhost:9092";
+
+    public SampleProducer() {
+
         // property field for producer
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
+        props.put(SERVER, HOST);
 
         // serializer
         props.put("key.serializer",
-                "org.apache.kafka.common.serialization.StringSerializer");
+                StringSerializer.class.getName());
         props.put("value.serializer",
-                "org.apache.kafka.common.serialization.StringSerializer");
+                StringSerializer.class.getName());
+
+        // get all write permission
+        props.put("acks", "all");
 
 
         // create a new producer instance
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
-        ProducerRecord record = new ProducerRecord("hello-kafka","author","steve jobs");
         KafkaProducer kafkaProducer = new KafkaProducer(props);
 
-        kafkaProducer.send(record);
+        // read some random values
+        for (int i = 1; i <= 100; i++) {
+            String key = Integer.toString(i); // generate key
+            String val = "Message: " + Integer.toString(i); // generate value
+            ProducerRecord record = new ProducerRecord(TOPIC, key, val);
+            producer.send(record);
+        }
+
         kafkaProducer.close(); // close the producer
-
-
-
-
 
 
     }
