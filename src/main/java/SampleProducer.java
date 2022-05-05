@@ -2,14 +2,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-
+import static com.helper.github.opheliah95.MyConst.*;
 import java.util.Properties;
 
 public class SampleProducer {
-    // static variable
-    public static final String TOPIC = "hello-kafka";
-    public static final String SERVER = "bootstrap.servers";
-    public static final String HOST = "localhost:9092";
 
     public SampleProducer() {
 
@@ -34,7 +30,7 @@ public class SampleProducer {
         // read some random values
         for (int i = 1; i <= 100; i++) {
             String key = Integer.toString(i); // generate key
-            String val = "Message: " + Integer.toString(i); // generate value
+            String val = "Message    : " + Integer.toString(i); // generate value
             ProducerRecord record = new ProducerRecord(TOPIC, key, val);
             producer.send(record);
         }
